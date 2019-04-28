@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { statement } from "@babel/template";
 import axios from "axios";
 
 export default class Postform extends Component {
@@ -14,14 +15,29 @@ export default class Postform extends Component {
   onSubmit = event => {
     event.preventDefault();
 
-    axios.post().then();
+    axios
+      .post(
+        "https://jsonplaceholder.typicode.com/posts",
+        {
+          title: this.state.title,
+          body: this.state.body
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(response => {
+        console.log(response.data);
+      });
   };
 
   render() {
     return (
       <div>
         <h1> Add Post</h1>
-        <form>
+        <form onSubmit={this.onSubmit}>
           <div>
             <label>Title: </label>
             <br />
