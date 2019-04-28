@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createPost } from "../reducers/actions/postActions";
 
-export default class Postform extends Component {
+class Postform extends Component {
   state = {
     title: "",
     body: ""
@@ -14,22 +16,11 @@ export default class Postform extends Component {
   onSubmit = event => {
     event.preventDefault();
 
-    axios
-      .post(
-        "https://jsonplaceholder.typicode.com/posts",
-        {
-          title: this.state.title,
-          body: this.state.body
-        },
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      )
-      .then(response => {
-        console.log(response.data);
-      });
+    const post = {
+      title: this.state.title,
+      body: this.state.body
+    };
+    this.props.createPost(post);
   };
 
   render() {
@@ -64,3 +55,12 @@ export default class Postform extends Component {
     );
   }
 }
+
+Postform.propTypes = {
+  createPost: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { createPost }
+)(Postform);
