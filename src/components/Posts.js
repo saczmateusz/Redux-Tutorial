@@ -1,22 +1,14 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+import { axiosPost } from "../reducers/actions/postActions";
 
-export default class Posts extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      posts: []
-    };
-  }
-
+class Posts extends Component {
   componentWillMount() {
-    axios.get("https://jsonplaceholder.typicode.com/posts").then(response => {
-      this.setState({ posts: response.data });
-    });
+    this.props.axiosPost();
   }
 
   render() {
-    let postItems = this.state.posts.map(post => (
+    let postItems = this.props.posts.map(post => (
       <div key={post.id}>
         <h3>{post.title}</h3>
         <p>{post.body}</p>
@@ -30,3 +22,12 @@ export default class Posts extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  posts: state.posts.items
+});
+
+export default connect(
+  mapStateToProps,
+  { axiosPost }
+)(Posts);
