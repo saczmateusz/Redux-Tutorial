@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { statement } from "@babel/template";
 import axios from "axios";
 
 export default class Postform extends Component {
